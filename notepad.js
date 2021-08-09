@@ -21,7 +21,7 @@ tutorial.notepad.makeNotes = function(data, noteContainer) {
   var notes = [];
   for (var i = 0; i < data.length; i++) {
     var note =
-      new tutorial.notepad.Note(data[i].title, data[i].content, noteContainer);
+      new tutorial.notepad.Note(data[i].title, data[i].content, data[i].user, noteContainer);
     notes.push(note);
     note.makeNoteDom();
   }
@@ -38,9 +38,10 @@ tutorial.notepad.makeNotes = function(data, noteContainer) {
  *     the notes should be added.
  * @constructor
  */
-tutorial.notepad.Note = function(title, content, noteContainer) {
+tutorial.notepad.Note = function(title, content, user, noteContainer) {
   this.title = title;
   this.content = content;
+  this.user = user
   this.parent = noteContainer;
 };
 
@@ -51,9 +52,10 @@ tutorial.notepad.Note = function(title, content, noteContainer) {
 tutorial.notepad.Note.prototype.makeNoteDom = function() {
   // Create DOM structure to represent the note.
   this.headerElement = goog.dom.createDom(
-      goog.dom.TagName.DIV, {'style': 'background-color:#EEE'}, this.title);
+    goog.dom.TagName.DIV, {'style': 'background-color:#ddd'}, this.title);
+  this.userElement = goog.dom.createDom(goog.dom.TagName.DIV, {'style': 'padding-left:100px'}, "by" + this.user)
   this.contentElement =
-      goog.dom.createDom(goog.dom.TagName.DIV, null, this.content);
+        goog.dom.createDom(goog.dom.TagName.DIV, null, this.content, this.userElement);
   var newNote = goog.dom.createDom(
       goog.dom.TagName.DIV, null, this.headerElement, this.contentElement);
 
