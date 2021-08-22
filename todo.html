@@ -9,11 +9,8 @@
     <script>
         function main(){
             const sampleElement = document.getElementById("todos")
-            const todoData = [
-                {'title': "kintoneを使う", "done":0 },
-                {'title': "javascriptの勉強", "done": 0}
-            ]
-            todopad.makeTodos(todoData, sampleElement);
+            const todoList = JSON.parse(localStorage.getItem('todoList'))
+            todopad.makeTodos(todoList, sampleElement);
         }
         main()
     </script>

@@ -7,7 +7,7 @@ goog.require('goog.ui.Zippy');
 
 
 todopad.makeTodos = function(data, todoContainer){
-    const addTodo = new todopad.AddTodo(todoContainer)
+    const addTodo = new todopad.AddTodo(data,todoContainer)
     addTodo.makeAddTodoDom(todoContainer);
     for(let i = 0; i < data.length; i++){
         const todo = new todopad.Todo(data[i], todoContainer)
@@ -17,7 +17,8 @@ todopad.makeTodos = function(data, todoContainer){
 }
 
 todopad.AddTodo = class {
-    constructor(todoContainer){
+    constructor(data ,todoContainer){
+        this.data = data
         this.parent = todoContainer;
     }
     makeAddTodoDom = (() => {
@@ -30,8 +31,10 @@ todopad.AddTodo = class {
     })
     addTodo = (() => {
         const title = this.addTodoInput.value;
-        const data = {title: title, done: 0}
-        const todo = new todopad.Todo(data, this.parent)
+        const newData = {title: title, done: 0}
+        this.data.push(newData)
+        localStorage.setItem('todoList', JSON.stringify(this.data))
+        const todo = new todopad.Todo(newData, this.parent)
         todo.makeTodoDom()
         this.addTodoInput.value = null;
     })
@@ -60,7 +63,6 @@ todopad.Todo = class {
         goog.events.listen(this.doneElement, goog.events.EventType.CLICK, this.changeDone, false, this )
         goog.events.listen(this.titleElement, goog.events.EventType.CLICK, this.openEditor, false, this )
         goog.events.listen(saveBtn, goog.events.EventType.CLICK, this.save, false, this )
-
     }
     changeDone(){
         if(this.done == 0){
