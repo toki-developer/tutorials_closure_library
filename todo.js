@@ -84,12 +84,31 @@ todopad.Todo = class {
     }
     updateStorageDone(done){
         const todoList = JSON.parse(localStorage.getItem('todoList'))
+
+        // for(let i = 0; i < todoList.length; i ++){
+        //     if(todoList[i].title == this.title) {
+        //         todoList[i].done = done;
+        //     }
+        // }
+        // localStorage.setItem('todoList', JSON.stringify(todoList))
+
+        const newTodoList =  [];
+        let targetTodo;
         for(let i = 0; i < todoList.length; i ++){
             if(todoList[i].title == this.title) {
+                targetTodo = {title: this.title, done}
                 todoList[i].done = done;
+            }else{
+                newTodoList.push(todoList[i])
             }
         }
-        localStorage.setItem('todoList', JSON.stringify(todoList))
+        if(done == 0){
+            newTodoList.unshift(targetTodo)
+        }else{
+            newTodoList.push(targetTodo)
+        }
+        localStorage.setItem('todoList', JSON.stringify(newTodoList))
+
     }
     save(){
         this.title = this.editorElement.value;
