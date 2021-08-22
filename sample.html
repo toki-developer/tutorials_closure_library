@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>sample</title>
+    <script src="closure-library/closure/goog/base.js"></script>
+    <script src="sample.js"></script>
+</head>
+<body>
+    <id id="todos"></id>
+    <script>
+        function main(){
+            const sampleElement = document.getElementById("todos")
+            const todoData = [
+                {'title': "kintoneを使う", "done":0 },
+                {'title': "javascriptの勉強", "done": 0}
+            ]
+            todopad.makeTodos(todoData, sampleElement);
+        }
+        main()
+    </script>
+</body>
+</html>
