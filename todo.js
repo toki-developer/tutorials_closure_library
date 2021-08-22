@@ -32,7 +32,11 @@ todopad.AddTodo = class {
     addTodo = (() => {
         const title = this.addTodoInput.value;
         const newData = {title: title, done: 0}
-        this.data.push(newData)
+        if(this.data){
+            this.data.push(newData)
+        }else{
+            this.data = [newData]
+        }
         localStorage.setItem('todoList', JSON.stringify(this.data))
         const todo = new todopad.Todo(newData, this.parent)
         todo.makeTodoDom()
