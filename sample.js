@@ -20,12 +20,21 @@ todopad.Todo = class {
         this.parent = noteContainer;
     }
     makeTodoDom(){
-        this.titleElement = goog.dom.createDom(goog.dom.TagName.SPAN, null, this.title);
         const doneState = this.done ? "完了": "未完了"
         this.doneElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {'style': 'margin-right:30px;'}, doneState)
-        const todoElement = goog.dom.createDom(goog.dom.TagName.DIV, null, this.doneElement, this.titleElement)
+
+        this.titleElement = goog.dom.createDom(goog.dom.TagName.SPAN, null, this.title);
+        this.editorElement = goog.dom.createDom(goog.dom.TagName.TEXTAREA);
+        const saveBtn = goog.dom.createDom(goog.dom.TagName.INPUT, {'type': 'button', 'value': 'Save'});
+        this.editorContainer = goog.dom.createDom(goog.dom.TagName.SPAN, {'style': 'display:none;'},this.editorElement,saveBtn);
+
+        const todoElement = goog.dom.createDom(goog.dom.TagName.DIV, null, this.doneElement, this.titleElement, this.editorContainer)
+
         this.parent.appendChild(todoElement);
         goog.events.listen(this.doneElement, goog.events.EventType.CLICK, this.changeDone, false, this )
+        goog.events.listen(this.titleElement, goog.events.EventType.CLICK, this.openEditor, false, this )
+        goog.events.listen(saveBtn, goog.events.EventType.CLICK, this.save, false, this )
+
     }
     changeDone(){
         if(this.done == 0){
@@ -36,5 +45,19 @@ todopad.Todo = class {
             this.titleElement.style.textDecoration = "none"
         }
         this.doneElement.innerHTML = this.done ? "完了": "未完了"
+    }
+    save(){
+        this.title = this.editorElement.value;
+        this.closeEditor();
+    }
+    closeEditor(){
+        this.titleElement.innerHTML = this.title;
+        this.editorContainer.style.display = "none"
+        this.titleElement.style.display = "inline"
+    }
+    openEditor(){
+        this.editorElement.value = this.title
+        this.editorContainer.style.display = "inline"
+        this.titleElement.style.display = "none"
     }
 }
