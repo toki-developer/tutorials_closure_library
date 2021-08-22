@@ -25,6 +25,14 @@ todopad.Todo = class {
         this.doneElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {'style': 'margin-right:30px;'}, doneState)
         const todoElement = goog.dom.createDom(goog.dom.TagName.DIV, null, this.doneElement, this.titleElement)
         this.parent.appendChild(todoElement);
+        goog.events.listen(this.doneElement, goog.events.EventType.CLICK, this.changeDone, false, this )
     }
-
+    changeDone(){
+        if(this.done == 0){
+            this.done = 1;
+        }else{
+            this.done = 0;
+        }
+        this.doneElement.innerHTML = this.done ? "完了": "未完了"
+    }
 }
