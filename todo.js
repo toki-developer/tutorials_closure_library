@@ -7,17 +7,42 @@ goog.require('goog.ui.Zippy');
 
 
 todopad.makeTodos = function(data, todoContainer){
+    const addTodo = new todopad.AddTodo(todoContainer)
+    addTodo.makeAddTodoDom(todoContainer);
     for(let i = 0; i < data.length; i++){
         const todo = new todopad.Todo(data[i], todoContainer)
         todo.makeTodoDom()
     }
+
 }
 
+todopad.AddTodo = class {
+    constructor(todoContainer){
+        this.parent = todoContainer;
+    }
+    makeAddTodoDom = (() => {
+        this.addTodoInput = goog.dom.createDom(goog.dom.TagName.TEXTAREA)
+        const addTodoBtn = goog.dom.createDom(goog.dom.TagName.INPUT, {'type': 'button', 'value': 'Save'})
+        const addContainer = goog.dom.createDom(goog.dom.TagName.SPAN, null, this.addTodoInput, addTodoBtn);
+        this.parent.appendChild(addContainer);
+        goog.events.listen(addTodoBtn, goog.events.EventType.CLICK, this.addTodo, false, this )
+    })
+    addTodo = (() => {
+        const title = this.addTodoInput.value;
+        const data = {title: title, done: 0}
+        const todo = new todopad.Todo(data, this.parent)
+        todo.makeTodoDom()
+        this.addTodoInput.value = null;
+    })
+}
+
+
+
 todopad.Todo = class {
-    constructor(data, noteContainer) {
+    constructor(data, todoContainer) {
         this.title = data.title;
         this.done = data.done;
-        this.parent = noteContainer;
+        this.parent = todoContainer;
     }
     makeTodoDom(){
         const doneState = this.done ? "完了": "未完了"
