@@ -30,8 +30,10 @@ todopad.Todo = class {
     changeDone(){
         if(this.done == 0){
             this.done = 1;
+            this.titleElement.style.textDecoration = "line-through"
         }else{
             this.done = 0;
+            this.titleElement.style.textDecoration = "none"
         }
         this.doneElement.innerHTML = this.done ? "完了": "未完了"
     }
