@@ -21,9 +21,10 @@ todopad.AddTodo = class {
         this.parent = todoContainer;
     }
     makeAddTodoDom = (() => {
-        this.addTodoInput = goog.dom.createDom(goog.dom.TagName.TEXTAREA)
+        this.addTodoInput = goog.dom.createDom(goog.dom.TagName.TEXTAREA, {'style': 'margin-right:30px; margin-left:30px;'})
         const addTodoBtn = goog.dom.createDom(goog.dom.TagName.INPUT, {'type': 'button', 'value': 'Save'})
-        const addContainer = goog.dom.createDom(goog.dom.TagName.SPAN, null, this.addTodoInput, addTodoBtn);
+        const addTitle = goog.dom.createDom(goog.dom.TagName.SPAN,null, "todoを追加")
+        const addContainer = goog.dom.createDom(goog.dom.TagName.DIV, {'style': 'margin-bottom: 40px; vertical-align: middle'},addTitle ,this.addTodoInput, addTodoBtn);
         this.parent.appendChild(addContainer);
         goog.events.listen(addTodoBtn, goog.events.EventType.CLICK, this.addTodo, false, this )
     })
