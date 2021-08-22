@@ -57,6 +57,9 @@ todopad.Todo = class {
         this.doneElement = goog.dom.createDom(goog.dom.TagName.BUTTON, {'style': 'margin-right:30px;'}, doneState)
 
         this.titleElement = goog.dom.createDom(goog.dom.TagName.SPAN, null, this.title);
+        if(this.done == 1) {
+            this.titleElement.style.textDecoration = "line-through"
+        }
         this.editorElement = goog.dom.createDom(goog.dom.TagName.TEXTAREA);
         const saveBtn = goog.dom.createDom(goog.dom.TagName.INPUT, {'type': 'button', 'value': 'Save'});
         this.editorContainer = goog.dom.createDom(goog.dom.TagName.SPAN, {'style': 'display:none;'},this.editorElement,saveBtn);
@@ -76,7 +79,17 @@ todopad.Todo = class {
             this.done = 0;
             this.titleElement.style.textDecoration = "none"
         }
+        this.updateStorageDone(this.done)
         this.doneElement.innerHTML = this.done ? "完了": "未完了"
+    }
+    updateStorageDone(done){
+        const todoList = JSON.parse(localStorage.getItem('todoList'))
+        for(let i = 0; i < todoList.length; i ++){
+            if(todoList[i].title == this.title) {
+                todoList[i].done = done;
+            }
+        }
+        localStorage.setItem('todoList', JSON.stringify(todoList))
     }
     save(){
         this.title = this.editorElement.value;
